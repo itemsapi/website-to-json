@@ -29,6 +29,7 @@ Full options
 wtj.extractUrl('twitter.com/itemsapi', {
   recipes: './recipes.js',
   timeout: 3000,
+  type: 'request',
   fields: ['meta', 'social', 'emails', 'id']
 })
 .then(function(res) {
