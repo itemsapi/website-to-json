@@ -1,5 +1,3 @@
-# Don't use it - it is still in heavy dev
-
 # Website to json converter (wtj)
 
 The mission of this tool is to convert each website to understandable JSON.
@@ -27,7 +25,7 @@ Full options
 
 ```js
 wtj.extractUrl('twitter.com/itemsapi', {
-  recipes: './recipes.js',
+  recipes: __dirname + '/recipes.js',
   timeout: 3000,
   type: 'request'
 })
