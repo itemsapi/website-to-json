@@ -1,10 +1,10 @@
 {
   "name": "website-to-json",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Converts all websites to JSON data",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests"
   },
   "bin": {
     "website-to-json": "./bin/index.js",

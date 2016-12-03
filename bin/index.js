@@ -7,13 +7,15 @@ var extractor = require('./../index')
 
 program
   .version('0.0.1')
-  //.usage('[options] <file ...>')
-  .usage('<url>')
+  .usage('[options] <file ...>')
+  .option('-r, --recipes <recipes>', 'Recipes filename')
+  .option('-t, --type <type>', 'Crawler type (request | phantomjs)')
+  //.usage('<url>')
 
 program.parse(process.argv);
 
 if (!process.argv.slice(2).length) {
-  program.outputHelp(make_red);
+  program.outputHelp(make_red)
 }
 
 function make_red(txt) {
@@ -23,11 +25,19 @@ function make_red(txt) {
 var url = process.argv[2]
 console.log(`Converting ${url} to JSON..`.green);
 
-return extractor.extractUrl(url, {
-  //stringify: true
-})
+var options = {
+}
+
+if (program.recipes) {
+  options.recipes = process.cwd() + '/' + program.recipes
+}
+
+if (program.type) {
+  options.type = program.type
+}
+
+return extractor.extractUrl(url, options)
 .then((res) => {
-  //console.log(res);
   if (!res.data) {
     console.log(`System has found only basic data. To make it more intelligent please add appropriate recipe in './recipe.js'`.red);
     console.log(`Your contribution will make it more useful for another people`.red);

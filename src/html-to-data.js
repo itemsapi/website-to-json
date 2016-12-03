@@ -56,6 +56,10 @@ exports.convert = function(url, html, options) {
     data.id = 'id_not_specified'
   }
 
+  if (options.fields && _.isArray(options.fields)) {
+    data = _.pick(data, options.fields)
+  }
+
   return data
 }
 
