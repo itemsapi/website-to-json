@@ -27,7 +27,7 @@ var social = [
 /**
  * converts url and html to json data
  */
-exports.convert = function(url, html) {
+exports.convert = function(url, html, options) {
 
   var $ = cheerio.load(html, defaultCheerioOptions);
 
@@ -42,7 +42,7 @@ exports.convert = function(url, html) {
     emails: _.uniq(string.emails(html))
   }
 
-  var element = exports.findRecipe(url);
+  var element = exports.findRecipe(url, options);
 
   if (element) {
     data.id = exports.generateId(url, element.pattern)
@@ -64,8 +64,17 @@ exports.generateId = function(url, pattern) {
 /**
  * find jquery recipe for URL
  */
-exports.findRecipe = function(url) {
-  var element = _.find(db, function(recipe) {
+exports.findRecipe = function(url, options) {
+  var recipes = db
+  if (options.recipes) {
+    if (_.isArray(options.recipes)) {
+      recipes = options.recipes
+    } else {
+      recipes = require(options.recipes)
+    }
+  }
+
+  var element = _.find(recipes, function(recipe) {
     var pattern = recipe.pattern
     if (url.match(pattern) !== null) {
       return true
@@ -75,20 +84,6 @@ exports.findRecipe = function(url) {
   })
   return element
 }
-
-/**
- * gets JSON data from HTML based on recipes
- */
-exports.getJsonData = function(url, $) {
-
-  var element = exports.findRecipe(url);
-
-  if (element) {
-    return element.parse($)
-  } else {
-  }
-}
-
 
 /**
  * gets url to fb, youtube, google plus etc
@@ -116,6 +111,5 @@ exports.getSocialUrls = function(url, $) {
       data[social_name] = element.url
     }
   }
-
   return data
 }

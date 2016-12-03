@@ -3,12 +3,12 @@ var Promise = require('bluebird');
 var request = Promise.promisifyAll(require('request'));
 var converter = require('./src/html-to-data')
 
-var processUrlWithRequestAsync = function(data) {
+exports.processUrlWithRequestAsync = function(data, options) {
   return request.getAsync({
     url: data.url,
     jar: true,
     gzip: true,
-    timeout: 3000,
+    timeout: options.timeout || 3000,
     headers: {'accept-languages': 'en'},
     forever: true
   })
@@ -24,6 +24,13 @@ var processUrlWithRequestAsync = function(data) {
   })
 }
 
+/**
+ * recipes
+ * timeout
+ * type
+ * fields
+ * keywords
+ */
 exports.extractUrl = function(url, options) {
   options = options || {}
 
@@ -31,18 +38,16 @@ exports.extractUrl = function(url, options) {
     url = 'http://' + url
   }
 
-  return processUrlWithRequestAsync({
+  return exports.processUrlWithRequestAsync({
     url: url
-  })
+  }, options)
   .catch((err) => {
-    //console.log(err);
-    throw new Error('Repo ' + url + ' seems to be not valid ' + err)
+    throw new Error('Url ' + url + ' seems to be not valid ' + err)
   })
   .then((html) => {
     if (options.stringify) {
-      return JSON.stringify(converter.convert(url, html), null, 2)
+      return JSON.stringify(converter.convert(url, html, options), null, 2)
     }
-    return converter.convert(url, html)
+    return converter.convert(url, html, options)
   })
 }
-
