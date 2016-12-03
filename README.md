@@ -28,6 +28,7 @@ wtj.extractUrl('twitter.com/itemsapi', {
   recipes: __dirname + '/recipes.js',
   timeout: 3000,
   type: 'request',
+  fields: ['meta', 'keywords'],
   keywords: ['pricing', 'blog', 'api', 'javascript']
 })
 .then(function(res) {
@@ -38,6 +39,7 @@ wtj.extractUrl('twitter.com/itemsapi', {
 ## CLI
 
 ```bash
+$ sudo npm install website-to-json -g
 $ wtj twitter.com/itemsapi
 ```
 
