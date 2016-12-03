@@ -42,6 +42,11 @@ exports.convert = function(url, html, options) {
     emails: _.uniq(string.emails(html))
   }
 
+
+  if (options.keywords && _.isArray(options.keywords)) {
+    data.keywords = exports.findKeywords(html, options.keywords)
+  }
+
   var element = exports.findRecipe(url, options);
 
   if (element) {
@@ -52,6 +57,16 @@ exports.convert = function(url, html, options) {
   }
 
   return data
+}
+
+/**
+ * generate ID by url and pattern
+ */
+exports.findKeywords = function(html, keywords) {
+  var text = html.toLowerCase()
+  return _.filter(keywords, function(val) {
+    return text.indexOf(val) !== -1
+  })
 }
 
 /**

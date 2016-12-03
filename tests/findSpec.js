@@ -42,4 +42,17 @@ describe('user manager', function() {
     assert.equal(result.title, 'myurl')
     done()
   })
+
+  it('find keywords', function test(done) {
+    var result = converter.findKeywords(
+      'pricing blog', ['pricing']
+    )
+    assert.deepEqual(result, ['pricing'])
+
+    var result = converter.findKeywords(
+      'pricing Blog', ['pricing', 'blog']
+    )
+    assert.deepEqual(result, ['pricing', 'blog'])
+    done()
+  })
 })
