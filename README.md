@@ -36,6 +36,37 @@ wtj.extractUrl('twitter.com/itemsapi', {
 })
 ```
 
+Example
+
+```js
+var trim = require('trim')
+var wtj = require('website-to-json')
+
+var recipes = [{
+  title: 'imdb',
+  pattern: '(imdb)\.com/title/(.*)/',
+  parse: function($) {
+    return {
+      name: trim($("h1").text()),
+    }
+  }
+}]
+
+wtj.extractUrl('http://www.imdb.com/title/tt0111161/', {
+  fields: ['data'],
+  recipes: recipes
+})
+.then(function(res) {
+  console.log(res);
+})
+```
+
+Response
+
+```js
+{ data: { name: 'Skazani na Shawshank (1994)' } }
+```
+
 ## CLI
 
 ```bash
