@@ -1,6 +1,6 @@
 # Website to json converter (wtj)
 
-The mission of this tool is to convert each website to understandable JSON.
+This tool converts each website to understandable JSON by jQuery recipes.
 
 ## Installation
 
@@ -64,7 +64,7 @@ wtj.extractUrl('http://www.imdb.com/title/tt0111161/', {
 Response
 
 ```js
-{ data: { name: 'Skazani na Shawshank (1994)' } }
+{ data: { name: 'The Shawshank Redemption (1994)' } }
 ```
 
 ## CLI
@@ -73,5 +73,3 @@ Response
 $ sudo npm install website-to-json -g
 $ wtj twitter.com/itemsapi
 ```
-
-To be continued!
