@@ -34,6 +34,8 @@ exports.convert = function(url, html, options) {
   var data = {
     meta: {
       title: S($('title').eq(0).text()).trim().s,
+      h1: S($('h1').text()).trim().s,
+      h2: S($('h2').text()).trim().s,
       description: $("meta[name='description']").attr('content'),
       'og:description': $("meta[property='og:description']").attr('content'),
       'og:image': $("meta[property='og:image']").attr('content')
@@ -42,9 +44,9 @@ exports.convert = function(url, html, options) {
     emails: _.uniq(string.emails(html))
   }
 
-
   if (options.keywords && _.isArray(options.keywords)) {
-    data.keywords = exports.findKeywords(html, options.keywords)
+    //data.keywords = exports.findKeywords(html, options.keywords)
+    data.keywords = exports.findKeywords($('body').text(), options.keywords)
   }
 
   var element = exports.findRecipe(url, options);
@@ -67,6 +69,7 @@ exports.convert = function(url, html, options) {
  * generate ID by url and pattern
  */
 exports.findKeywords = function(html, keywords) {
+  ////console.log(html.html());
   var text = html.toLowerCase()
   return _.filter(keywords, function(val) {
     return text.indexOf(val) !== -1
