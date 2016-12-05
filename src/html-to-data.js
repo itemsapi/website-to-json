@@ -28,8 +28,9 @@ var social = [
  * converts url and html to json data
  */
 exports.convert = function(url, html, options) {
-
   var $ = cheerio.load(html, defaultCheerioOptions);
+
+  var body = $('body').text()
 
   var data = {
     meta: {
@@ -40,13 +41,16 @@ exports.convert = function(url, html, options) {
       'og:description': $("meta[property='og:description']").attr('content'),
       'og:image': $("meta[property='og:image']").attr('content')
     },
-    social: exports.getSocialUrls(url, $),
-    emails: _.uniq(string.emails(html))
+    social: exports.getSocialUrls(url, $)
+  }
+
+  if (options.fields && options.fields.indexOf('emails') !== -1) {
+    data.emails = _.uniq(string.emails(html))
   }
 
   if (options.keywords && _.isArray(options.keywords)) {
     //data.keywords = exports.findKeywords(html, options.keywords)
-    data.keywords = exports.findKeywords($('body').text(), options.keywords)
+    data.keywords = exports.findKeywords(body, options.keywords)
   }
 
   var element = exports.findRecipe(url, options);

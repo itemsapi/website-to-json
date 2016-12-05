@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var Promise = require('bluebird');
 var request = Promise.promisifyAll(require('request'));
+var fs = Promise.promisifyAll(require('fs'));
 var converter = require('./src/html-to-data')
 //var phantomjs = require('phantomjs-bin');
 var Horseman = require('node-horseman');
@@ -12,15 +13,15 @@ exports.processUrlWithRequestAsync = function(url, options) {
     jar: true,
     gzip: true,
     timeout: options.timeout || 3000,
+    followAllRedirects: true,
     headers: {'accept-languages': 'en'},
     forever: true
   })
   .then(function(res) {
     if (res.statusCode === 429) {
-      throw new Error('blocked 429')
+      throw new Error('Request blocked with: 429')
     } else if (res.statusCode !== 200) {
-      console.log(res.statusCode);
-      throw new Error('non 200 status code' + res[0].statusCode)
+      throw new Error('Non 200 status code: ' + res.statusCode)
     }
 
     return res.body
@@ -74,11 +75,17 @@ exports.extractUrl = function(url, options) {
     url = 'http://' + url
   }
 
+
+
+
   return exports.processUrlAsync(url, options)
   .catch((err) => {
     throw new Error('Url ' + url + ' seems to be not valid ' + err)
   })
   .then((html) => {
+
+    //fs.writeFileSync(__dirname + '/cache/' + url, html, 'utf8')
+
     if (options.stringify) {
       return JSON.stringify(converter.convert(url, html, options), null, 2)
     }
