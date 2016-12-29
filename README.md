@@ -21,21 +21,6 @@ wtj.extractUrl('twitter.com/itemsapi')
 })
 ```
 
-Full options
-
-```js
-wtj.extractUrl('twitter.com/itemsapi', {
-  recipes: __dirname + '/recipes.js',
-  timeout: 3000,
-  type: 'request',
-  fields: ['meta', 'keywords'],
-  keywords: ['pricing', 'blog', 'api', 'javascript']
-})
-.then(function(res) {
-  console.log(res);
-})
-```
-
 Example
 
 ```js
