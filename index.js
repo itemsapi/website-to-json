@@ -71,21 +71,35 @@ exports.processUrlAsync = function(url, data) {
 exports.extractUrl = function(url, options) {
   options = options || {}
 
+  if (!url) {
+    throw new Error('url is required')
+  }
+
   if (url.indexOf('http') === -1) {
     url = 'http://' + url
   }
 
-
-
+  if (options.nightmare) {
+    return new Promise(function (resolve, reject) {
+      options.nightmare.goto(url)
+      .wait('body')
+      .evaluate(function(){
+        return document.documentElement.innerHTML
+        //return document.body.innerHTML
+      })
+      //.html('html', 'HTMLOnly')
+      //.end()
+      .then(function(title){
+        return resolve(converter.convert(url, title, options))
+      })
+    }).timeout(10000)
+  }
 
   return exports.processUrlAsync(url, options)
   .catch((err) => {
     throw new Error('Url ' + url + ' seems to be not valid ' + err)
   })
   .then((html) => {
-
-    //fs.writeFileSync(__dirname + '/cache/' + url, html, 'utf8')
-
     if (options.stringify) {
       return JSON.stringify(converter.convert(url, html, options), null, 2)
     }

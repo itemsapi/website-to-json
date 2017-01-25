@@ -1,6 +1,6 @@
 {
   "name": "website-to-json",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Converts all websites to JSON data",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "scraping",
     "data-mining",
     "cheerio",
+    "nightmare",
     "scrapy"
   ],
   "author": "Matt Rzepa <mrzepa89@gmail.com>",
