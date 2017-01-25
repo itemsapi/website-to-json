@@ -64,8 +64,10 @@ var nightmare = Nightmare({
   show: true,
 });
 
-return wtj.extractUrl(val, {
+return wtj.extractUrl('http://www.imdb.com/title/tt0111161/', {
   nightmare: nightmare,
+  // recipes are necessary for extracting instructions
+  recipes: recipes,
   fields: ['data', 'meta', 'social'],
 })
 .then(function(res) {
