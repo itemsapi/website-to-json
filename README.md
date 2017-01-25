@@ -61,12 +61,15 @@ The way of working is similar as usual. You only need to provide instance of Nig
 ```js
 var Nightmare = require('nightmare');
 var nightmare = Nightmare({
-  show: true,
+  // responsible for showing browser
+  show: true
 });
+var wtj = require('website-to-json')
 
 return wtj.extractUrl('http://www.imdb.com/title/tt0111161/', {
   nightmare: nightmare,
   // recipes are necessary for extracting instructions
+  // you can take from another examples
   recipes: recipes,
   fields: ['data', 'meta', 'social'],
 })
