@@ -82,6 +82,10 @@ Response
 
 ## CLI
 
+- <a href="https://github.com/itemsapi/website-to-json/blob/master/docs/NIGHTMARE.md">Integration with Nightmare</a>
+
+## CLI
+
 ```bash
 $ sudo npm install website-to-json -g
 $ wtj twitter.com/itemsapi
