@@ -35,5 +35,8 @@
     "sinon": "^1.17.6",
     "string": "^3.3.3",
     "trim": "0.0.1"
+  },
+  "devDependencies": {
+    "nock": "^9.0.9"
   }
 }

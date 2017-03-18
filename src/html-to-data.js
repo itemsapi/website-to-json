@@ -98,6 +98,12 @@ exports.findRecipe = function(url, options) {
     } else {
       recipes = require(options.recipes)
     }
+  } else if (options.recipe) {
+    return options.recipe;
+  } else if (options.parse && _.isFunction(options.parse)) {
+    return {
+      parse: options.parse
+    }
   }
 
   var element = _.find(recipes, function(recipe) {

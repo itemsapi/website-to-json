@@ -1,6 +1,6 @@
 # Website to json converter (wtj)
 
-This tool converts each website to understandable JSON by jQuery recipes.
+This tool converts each website to understandable JSON by jQuery selectors.
 
 ## Installation
 
@@ -10,18 +10,44 @@ $ npm install website-to-json --save
 
 ## Getting started
 
-Basic
+### Examples
+
+#### Stack Overflow
 
 ```js
 var wtj = require('website-to-json')
-
-wtj.extractUrl('twitter.com/itemsapi')
+wtj.extractUrl('http://stackoverflow.com/questions/3207418/crawler-vs-scraper', {
+  fields: ['data'],
+  parse: function($) {
+    return {
+      title: $("h1").text(),
+      keywords: $('.post-taglist a').map(function(val) {
+        return $(this).text()
+      }).get()
+    }
+  }
+})
 .then(function(res) {
-  console.log(res);
+  console.log(JSON.stringify(res, null, 2));
 })
 ```
 
-Example
+Response
+
+```js
+{
+  "data": {
+    "title": "crawler vs scraper",
+    "keywords": [
+      "web-crawler",
+      "terminology",
+      "scraper"
+    ]
+  }
+}
+```
+
+#### IMDB
 
 ```js
 var trim = require('trim')
@@ -49,7 +75,13 @@ wtj.extractUrl('http://www.imdb.com/title/tt0111161/', {
 Response
 
 ```js
-{ data: { name: 'The Shawshank Redemption (1994)' } }
+{
+  "data": {
+    "title": "The Shawshank Redemption (1994)",
+    "image": "https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1_UX182_CR0,0,182,268_AL_.jpg",
+    "summary": "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency."
+  }
+}
 ```
 
 ## Nightmare integration
