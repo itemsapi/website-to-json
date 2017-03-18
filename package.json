@@ -1,6 +1,6 @@
 {
   "name": "website-to-json",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Converts all websites to JSON data",
   "main": "index.js",
   "scripts": {
