@@ -18,6 +18,7 @@ var social = [
   'plus.google.com',
   'instagram.com',
   'github.com',
+  'facebook.com',
   'behance.net',
   'dribbble.com',
   'goldenline.pl'
