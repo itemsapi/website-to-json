@@ -1,7 +1,7 @@
-var S = require('string')
-var _ = require('lodash')
-var trim = require('trim')
+var wtj = require('./index')
 
-var array = []
-
-module.exports = array;
+wtj.extractUrl(process.env.DOMAIN, {
+})
+.then(function(res) {
+  console.log(JSON.stringify(res, null, 2));
+})

@@ -1,10 +1,9 @@
-var _ = require('lodash');
-var Promise = require('bluebird');
-var request = Promise.promisifyAll(require('request'));
-var fs = Promise.promisifyAll(require('fs'));
-var converter = require('./src/html-to-data')
-//var phantomjs = require('phantomjs-bin');
-var Horseman = require('node-horseman');
+const _ = require('lodash');
+const Promise = require('bluebird');
+const request = Promise.promisifyAll(require('request'));
+const fs = Promise.promisifyAll(require('fs'));
+const converter = require('./src/html-to-data')
+const Horseman = require('node-horseman');
 
 exports.processUrlWithRequestAsync = function(url, options) {
   options = options || {}
@@ -12,7 +11,7 @@ exports.processUrlWithRequestAsync = function(url, options) {
     url: url,
     jar: true,
     gzip: true,
-    timeout: options.timeout || 3000,
+    timeout: options.timeout || 8000,
     followAllRedirects: true,
     headers: {'accept-languages': 'en'},
     forever: true
@@ -24,7 +23,11 @@ exports.processUrlWithRequestAsync = function(url, options) {
       throw new Error('Non 200 status code: ' + res.statusCode)
     }
 
-    return res.body
+    return {
+      body: res.body,
+      url: res.request.href,
+      originalUrl: url
+    };
   })
 }
 
@@ -46,7 +49,10 @@ exports.processUrlWithPhantomAsync = function(url, options) {
     })*/
     .html()
     .then(function(body) {
-      return resolve(body)
+      return resolve({
+        body: body,
+        originalUrl: url
+      });
     })
   })
   .catch((err) => {
@@ -85,25 +91,32 @@ exports.extractUrl = function(url, options) {
       .wait('body')
       .evaluate(function(){
         return document.documentElement.innerHTML
-        //return document.body.innerHTML
       })
-      //.html('html', 'HTMLOnly')
-      //.end()
-      .then(function(title){
-        return resolve(converter.convert(url, title, options))
+      .then(function(title) {
+        return resolve(converter.convert(url, title, options));
       })
     }).timeout(10000)
   }
 
   return exports.processUrlAsync(url, options)
   .catch((err) => {
-    throw new Error('Url ' + url + ' seems to be not valid ' + err)
+    throw new Error('Url ' + url + ' seems to be not valid ' + err);
   })
-  .then((html) => {
-    if (options.stringify) {
-      return JSON.stringify(converter.convert(url, html, options), null, 2)
+  .then((result) => {
+
+    var output = _.merge(converter.convert(url, result.body, options), {
+      url: result.url,
+      originalUrl: result.originalUrl
+    });
+
+    if (output.id === 'id_not_specified') {
+      delete output.id;
     }
-    return converter.convert(url, html, options)
+
+    if (options.stringify) {
+      return JSON.stringify(output, null, 2);
+    }
+    return output;
   })
 }
 
