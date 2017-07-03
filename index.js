@@ -10,7 +10,7 @@ exports.processUrlWithRequestAsync = function(url, options) {
   return request.getAsync({
     url: url,
     jar: true,
-    encoding: 'binary',
+    //encoding: 'binary',
     gzip: true,
     timeout: options.timeout || 8000,
     followAllRedirects: true,
