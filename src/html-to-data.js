@@ -10,21 +10,6 @@ var defaultCheerioOptions = {
   decodeEntities: true
 };
 
-var social = [
-  'twitter.com',
-  'linkedin.com',
-  'pinterest.com',
-  'youtube.com',
-  'plus.google.com',
-  'instagram.com',
-  'github.com',
-  'facebook.com',
-  'behance.net',
-  'dribbble.com',
-  'goldenline.pl'
-]
-
-
 /**
  * converts url and html to json data
  */
@@ -32,6 +17,20 @@ exports.convert = function(url, html, options) {
   var $ = cheerio.load(html, defaultCheerioOptions);
 
   var body = $('body').text()
+
+  social = _.merge([
+    'twitter.com',
+    'linkedin.com',
+    'pinterest.com',
+    'youtube.com',
+    'plus.google.com',
+    'instagram.com',
+    'github.com',
+    'facebook.com',
+    'behance.net',
+    'dribbble.com',
+    'goldenline.pl'
+  ], options.social || []);
 
   var data = {
     meta: {
@@ -42,7 +41,7 @@ exports.convert = function(url, html, options) {
       'og:description': $("meta[property='og:description']").attr('content'),
       'og:image': $("meta[property='og:image']").attr('content')
     },
-    social: exports.getSocialUrls(url, $)
+    social: exports.getSocialUrls(url, $, social)
   }
 
   if (options.fields && options.fields.indexOf('emails') !== -1) {
@@ -121,7 +120,7 @@ exports.findRecipe = function(url, options) {
 /**
  * gets url to fb, youtube, google plus etc
  */
-exports.getSocialUrls = function(url, $) {
+exports.getSocialUrls = function(url, $, social) {
 
   var links = $('a').map(function(val) {
     return {

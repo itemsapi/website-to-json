@@ -106,3 +106,5 @@ exports.extractUrl = function(url, options) {
     return converter.convert(url, html, options)
   })
 }
+
+exports.extractData = exports.extractUrl;

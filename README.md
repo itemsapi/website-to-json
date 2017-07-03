@@ -16,7 +16,7 @@ $ npm install website-to-json --save
 
 ```js
 var wtj = require('website-to-json')
-wtj.extractUrl('http://stackoverflow.com/questions/3207418/crawler-vs-scraper', {
+wtj.extractData('http://stackoverflow.com/questions/3207418/crawler-vs-scraper', {
   fields: ['data'],
   parse: function($) {
     return {
@@ -53,7 +53,7 @@ Response
 var trim = require('trim')
 var wtj = require('website-to-json')
 
-wtj.extractUrl('http://www.imdb.com/title/tt0111161', {
+wtj.extractData('http://www.imdb.com/title/tt0111161', {
   fields: ['data'],
   parse: function($) {
     return {
@@ -80,7 +80,7 @@ Response
 }
 ```
 
-## CLI
+## Nightmare.js
 
 - <a href="https://github.com/itemsapi/website-to-json/blob/master/docs/NIGHTMARE.md">Integration with Nightmare</a>
 

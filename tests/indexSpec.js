@@ -58,4 +58,33 @@ describe('user manager', function() {
       done()
     })
   })
+
+  it('make request and get social websites', function test(done) {
+    var stub = sinon.stub(service, 'processUrlWithRequestAsync', function(config) {
+      return Promise.resolve('<a href="https://www.facebook.com/abcdefgh"Facebook</a>')
+    })
+
+    service.extractData('my_url.com/id/5', {
+    })
+    .then(function(result) {
+      assert.equal(result.social.facebook, 'https://www.facebook.com/abcdefgh')
+      stub.restore()
+      done()
+    })
+  })
+
+  it('make request and get social websites', function test(done) {
+    var stub = sinon.stub(service, 'processUrlWithRequestAsync', function(config) {
+      return Promise.resolve('<a href="https://www.domain.com/test">Domain</a>')
+    })
+
+    service.extractData('my_url.com/id/5', {
+      social: ['domain.com']
+    })
+    .then(function(result) {
+      assert.equal(result.social.domain, 'https://www.domain.com/test')
+      stub.restore()
+      done()
+    })
+  })
 })
