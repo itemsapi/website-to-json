@@ -23,7 +23,9 @@ describe('user manager', function() {
 
   it('make request', function test(done) {
     var stub = sinon.stub(service, 'processUrlWithRequestAsync', function(config) {
-      return Promise.resolve('<p>test</p>')
+      return Promise.resolve({
+        body: '<p>test</p>'
+      })
     })
 
     service.extractUrl('my_url.com', {
@@ -39,7 +41,9 @@ describe('user manager', function() {
 
   it('make request', function test(done) {
     var stub = sinon.stub(service, 'processUrlWithRequestAsync', function(config) {
-      return Promise.resolve('<p>test</p>')
+      return Promise.resolve({
+        body: '<p>test</p>'
+      })
     })
 
     service.extractUrl('my_url.com/id/5', {
@@ -61,11 +65,12 @@ describe('user manager', function() {
 
   it('make request and get social websites', function test(done) {
     var stub = sinon.stub(service, 'processUrlWithRequestAsync', function(config) {
-      return Promise.resolve('<a href="https://www.facebook.com/abcdefgh"Facebook</a>')
+      return Promise.resolve({
+        body: '<a href="https://www.facebook.com/abcdefgh"Facebook</a><a href="https://www.facebook.com/abcdefgh"Facebook</a>'
+      })
     })
 
-    service.extractData('my_url.com/id/5', {
-    })
+    service.extractData('my_url.com/id/5', {})
     .then(function(result) {
       assert.equal(result.social.facebook, 'https://www.facebook.com/abcdefgh')
       stub.restore()
@@ -75,7 +80,9 @@ describe('user manager', function() {
 
   it('make request and get social websites', function test(done) {
     var stub = sinon.stub(service, 'processUrlWithRequestAsync', function(config) {
-      return Promise.resolve('<a href="https://www.domain.com/test">Domain</a>')
+      return Promise.resolve({
+        body: '<a href="https://www.domain.com/test">Domain</a>'
+      })
     })
 
     service.extractData('my_url.com/id/5', {

@@ -10,18 +10,18 @@ exports.processUrlWithRequestAsync = function(url, options) {
   return request.getAsync({
     url: url,
     jar: true,
-    //encoding: 'binary',
+    encoding: options.encoding,
     gzip: true,
     timeout: options.timeout || 8000,
-    followAllRedirects: true,
-    headers: {'accept-languages': 'en'},
+    followAllRedirects: options.followAllRedirects || true,
+    headers: options.headers || {'accept-languages': 'en'},
     forever: true
   })
   .then(function(res) {
     if (res.statusCode === 429) {
-      throw new Error('Request blocked with: 429')
+      throw new Error('Request blocked with: 429');
     } else if (res.statusCode !== 200) {
-      throw new Error('Non 200 status code: ' + res.statusCode)
+      throw new Error('Non 200 status code: ' + res.statusCode);
     }
 
     return {
