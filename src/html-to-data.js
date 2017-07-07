@@ -38,15 +38,31 @@ exports.convert = function(url, html, options) {
       h1: S($('h1').text()).trim().s,
       h2: S($('h2').text()).trim().s,
       description: $("meta[name='description']").attr('content'),
+      keywords: $("meta[name='keywords']").attr('content'),
       'og:description': $("meta[property='og:description']").attr('content'),
       'og:image': $("meta[property='og:image']").attr('content')
     },
     social: exports.getSocialUrls(url, $, social)
   }
 
-  if (options.fields && options.fields.indexOf('emails') !== -1) {
-    data.emails = _.uniq(string.emails(html))
+  if (options.emails || (options.fields && options.fields.indexOf('emails') !== -1)) {
+    data.emails = _.uniq(string.emails(html));
   }
+
+  if (options.links || (options.fields && options.fields.indexOf('links') !== -1)) {
+    data.links = $('a').map(function(val) {
+      return {
+        text: S($(this).text()).trim().s,
+        href: $(this).attr('href')
+      };
+    }).get();
+
+    data.links = _.filter(data.links, (val) => {
+      return val.text || val.href;
+    })
+
+  }
+
 
   if (options.keywords && _.isArray(options.keywords)) {
     //data.keywords = exports.findKeywords(html, options.keywords)
