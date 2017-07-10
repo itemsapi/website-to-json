@@ -35,8 +35,8 @@ exports.convert = function(url, html, options) {
   var data = {
     meta: {
       title: S($('title').eq(0).text()).trim().s,
-      h1: S($('h1').text()).trim().s,
-      h2: S($('h2').text()).trim().s,
+      h1: S($('h1').first().text()).trim().s,
+      h2: S($('h2').first().text()).trim().s,
       description: $("meta[name='description']").attr('content'),
       keywords: $("meta[name='keywords']").attr('content'),
       'og:description': $("meta[property='og:description']").attr('content'),

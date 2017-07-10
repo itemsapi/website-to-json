@@ -26,6 +26,10 @@ exports.processUrlWithRequestAsync = function(url, options) {
 
     return {
       body: res.body,
+      headers: res.headers,
+      http: {
+        statusCode: res.statusCode
+      },
       url: res.request.href,
       originalUrl: url
     };
@@ -109,6 +113,14 @@ exports.extractUrl = function(url, options) {
       url: result.url,
       originalUrl: result.originalUrl
     });
+
+    if (options.headers === true) {
+      output.headers = result.headers;
+    }
+
+    if (options.http === true) {
+      output.http = result.http;
+    }
 
     if (output.id === 'id_not_specified') {
       delete output.id;
