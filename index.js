@@ -4,9 +4,11 @@ const request = Promise.promisifyAll(require('request'));
 const fs = Promise.promisifyAll(require('fs'));
 const converter = require('./src/html-to-data')
 const Horseman = require('node-horseman');
+const logger = require('winston');
 
 exports.processUrlWithRequestAsync = function(url, options) {
   options = options || {}
+
   return request.getAsync({
     url: url,
     jar: true,
@@ -15,7 +17,7 @@ exports.processUrlWithRequestAsync = function(url, options) {
     timeout: options.timeout || 8000,
     followAllRedirects: options.followAllRedirects || true,
     headers: options.headers || {'accept-languages': 'en'},
-    forever: true
+    forever: options.forever === false ? false : true
   })
   .then(function(res) {
     if (res.statusCode === 429) {
@@ -82,6 +84,8 @@ exports.processUrlAsync = function(url, data) {
 exports.extractUrl = function(url, options) {
   options = options || {}
 
+  var DEBUG = !!(process.env.DEBUG || options.debug);
+
   if (!url) {
     throw new Error('url is required')
   }
@@ -103,12 +107,16 @@ exports.extractUrl = function(url, options) {
     }).timeout(10000)
   }
 
+  if (DEBUG) logger.profile('get html ' + url);
+
   return exports.processUrlAsync(url, options)
   .catch((err) => {
     throw new Error('Url ' + url + ' seems to be not valid ' + err);
   })
   .then((result) => {
+    if (DEBUG) logger.profile('get html ' + url);
 
+    if (DEBUG) logger.profile('process html ' + url);
     var output = _.merge(converter.convert(url, result.body, options), {
       url: result.url,
       originalUrl: result.originalUrl
@@ -129,6 +137,8 @@ exports.extractUrl = function(url, options) {
     if (options.stringify) {
       return JSON.stringify(output, null, 2);
     }
+
+    if (DEBUG) logger.profile('process html ' + url);
     return output;
   })
 }

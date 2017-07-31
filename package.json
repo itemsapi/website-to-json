@@ -1,6 +1,6 @@
 {
   "name": "website-to-json",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Converts all websites to JSON data",
   "main": "index.js",
   "scripts": {
@@ -34,7 +34,8 @@
     "should": "^11.1.1",
     "sinon": "^1.17.6",
     "string": "^3.3.3",
-    "trim": "0.0.1"
+    "trim": "0.0.1",
+    "winston": "^2.3.1"
   },
   "devDependencies": {
     "nock": "^9.0.9"
