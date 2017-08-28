@@ -15,11 +15,13 @@ exports.processUrlWithRequestAsync = function(url, options) {
     encoding: options.encoding,
     gzip: true,
     timeout: options.timeout || 8000,
+    time: !!options.time,
     followAllRedirects: options.followAllRedirects || true,
     headers: options.headers || {'accept-languages': 'en'},
     forever: options.forever === false ? false : true
   })
   .then(function(res) {
+
     if (res.statusCode === 429) {
       throw new Error('Request blocked with: 429');
     } else if (res.statusCode !== 200) {
@@ -29,6 +31,7 @@ exports.processUrlWithRequestAsync = function(url, options) {
     return {
       body: res.body,
       headers: res.headers,
+      timingPhases: res.timingPhases,
       http: {
         statusCode: res.statusCode
       },
@@ -124,6 +127,10 @@ exports.extractUrl = function(url, options) {
 
     if (options.headers === true) {
       output.headers = result.headers;
+    }
+
+    if (options.time === true) {
+      output.timings = result.timingPhases;
     }
 
     if (options.http === true) {
