@@ -114,7 +114,7 @@ exports.extractUrl = function(url, options) {
 
   return exports.processUrlAsync(url, options)
   .catch((err) => {
-    throw new Error('Url ' + url + ' seems to be not valid ' + err);
+    throw new Error(err);
   })
   .then((result) => {
     if (DEBUG) logger.profile('get html ' + url);
