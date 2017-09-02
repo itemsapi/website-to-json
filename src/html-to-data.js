@@ -18,7 +18,7 @@ exports.convert = function(url, html, options) {
 
   var body = $('body').text()
 
-  social = _.merge([
+  social = _.uniq(_.concat([
     'twitter.com',
     'linkedin.com',
     'pinterest.com',
@@ -29,8 +29,7 @@ exports.convert = function(url, html, options) {
     'facebook.com',
     'behance.net',
     'dribbble.com',
-    'goldenline.pl'
-  ], options.social || []);
+  ], options.social || []));
 
   var data = {
     meta: {

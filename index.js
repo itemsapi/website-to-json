@@ -113,9 +113,6 @@ exports.extractUrl = function(url, options) {
   if (DEBUG) logger.profile('get html ' + url);
 
   return exports.processUrlAsync(url, options)
-  .catch((err) => {
-    throw new Error(err);
-  })
   .then((result) => {
     if (DEBUG) logger.profile('get html ' + url);
 
