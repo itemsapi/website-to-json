@@ -36,10 +36,10 @@ exports.convert = function(url, html, options) {
       title: S($('title').eq(0).text()).trim().s,
       h1: S($('h1').first().text()).trim().s,
       h2: S($('h2').first().text()).trim().s,
-      description: $("meta[name='description']").attr('content'),
-      keywords: $("meta[name='keywords']").attr('content'),
-      'og:description': $("meta[property='og:description']").attr('content'),
-      'og:image': $("meta[property='og:image']").attr('content')
+      description: $("meta[name='description' i]").attr('content'),
+      keywords: $("meta[name='keywords' i]").attr('content'),
+      'og:description': $("meta[property='og:description' i]").attr('content'),
+      'og:image': $("meta[property='og:image' i]").attr('content')
     },
     social: exports.getSocialUrls(url, $, social)
   }
