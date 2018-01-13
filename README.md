@@ -80,6 +80,33 @@ Response
 }
 ```
 
+#### IMDB many URL's
+
+```js
+var wtj = require('website-to-json');
+var trim = require('trim');
+
+Promise.all([
+  'http://www.imdb.com/title/tt0111161',
+  'http://www.imdb.com/title/tt0137523',
+  'http://www.imdb.com/title/tt0068646'
+])
+.map(function(url) {
+  return wtj.extractUrl(url, {
+    fields: ['data'],
+    parse: function($) {
+      return {
+        title: trim($(".title_wrapper h1").text()),
+        image: $(".poster img").attr('src')
+      }
+    }
+  })
+}, {concurrency: 1})
+.then(function(res) {
+  console.log(JSON.stringify(res, null, 2));
+})
+```
+
 ## Nightmare.js
 
 - <a href="https://github.com/itemsapi/website-to-json/blob/master/docs/NIGHTMARE.md">Integration with Nightmare</a>
